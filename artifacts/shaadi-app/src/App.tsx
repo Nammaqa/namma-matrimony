@@ -11,6 +11,8 @@ import InboxPage from "@/pages/dashboard/InboxPage";
 import PremiumPage from "@/pages/dashboard/PremiumPage";
 import ProfilePage from "@/pages/dashboard/ProfilePage";
 import SettingsPage from "@/pages/dashboard/SettingsPage";
+import ProfileDetailPage from "@/pages/dashboard/ProfileDetailPage";
+import InterestsPage from "@/pages/dashboard/InterestsPage";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -46,6 +48,12 @@ function App() {
             </Route>
             <Route path="/dashboard/settings">
               {isLoggedIn ? <SettingsPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
+            </Route>
+            <Route path="/dashboard/view/:id">
+              {isLoggedIn ? <ProfileDetailPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
+            </Route>
+            <Route path="/dashboard/interests">
+              {isLoggedIn ? <InterestsPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
             </Route>
             <Route component={NotFound} />
           </Switch>

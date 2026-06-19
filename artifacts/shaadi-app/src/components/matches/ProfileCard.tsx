@@ -1,134 +1,178 @@
-import React from "react";
-import { CheckCircle2, ChevronLeft, ChevronRight, Check, Heart, Star, MoreVertical } from "lucide-react";
+import { useLocation } from "wouter";
+import { CheckCircle2, Heart, Star, MoreVertical, ShieldCheck, Camera, CreditCard, Smartphone, Crown, Check } from "lucide-react";
+import type { Profile } from "@/data/profiles";
+import { profilePhotos } from "@/data/profiles";
 
-export type ProfileData = {
-  id: string;
-  name: string;
-  age: string;
-  height: string;
-  religion: string;
-  location: string;
-  language: string;
-  education: string;
-  profession: string;
-  income: string;
-  marital: string;
-  profileBy: string;
-  badge?: { type: string; label: string };
-  action: string;
-  img: string;
-};
+interface ProfileCardProps {
+  profile: Profile;
+  isShortlisted: boolean;
+  interestSent: boolean;
+  onShortlist: () => void;
+  onSendInterest: () => void;
+  onMarkViewed: () => void;
+}
 
-export default function ProfileCard({ profile }: { profile: ProfileData }) {
+function VerificationBadges({ verified }: { verified: Profile["verified"] }) {
+  const badges = [];
+  if (verified.profile) badges.push({ icon: ShieldCheck, label: "Verified", color: "text-blue-500" });
+  if (verified.photo) badges.push({ icon: Camera, label: "Photo", color: "text-green-500" });
+  if (verified.id) badges.push({ icon: CreditCard, label: "ID", color: "text-purple-500" });
+  if (verified.mobile) badges.push({ icon: Smartphone, label: "Mobile", color: "text-orange-500" });
   return (
-    <div className="bg-white rounded-xl p-4 flex flex-col sm:flex-row gap-5 mb-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow group relative overflow-hidden" data-testid={`profile-card-${profile.id}`}>
-      
-      {/* Decorative background accent */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#8B1A4A]/5 to-transparent rounded-bl-full pointer-events-none"></div>
-      
-      {/* Left side: Photo */}
-      <div className="relative w-full sm:w-[180px] h-[220px] rounded-lg overflow-hidden flex-shrink-0 group/photo">
-        <img 
-          src={profile.img} 
-          alt={profile.name} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover/photo:scale-105"
-        />
-        
-        {profile.badge && (
-          <div className={`absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold text-white shadow-sm z-10 ${
-            profile.badge.type === "plus" ? "bg-[#D4AF37]" : 
-            profile.badge.type === "new" ? "bg-emerald-500" : "bg-blue-500"
-          }`}>
-            {profile.badge.label}
-          </div>
-        )}
+    <div className="flex flex-wrap gap-1 mb-2">
+      {badges.map((b) => {
+        const Icon = b.icon;
+        return (
+          <span key={b.label} className={`inline-flex items-center gap-0.5 text-[9px] font-bold ${b.color} bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded`}>
+            <Icon className="h-2.5 w-2.5" />{b.label}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
 
-        <div className="absolute top-2 right-2 w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-sm z-10"></div>
-        
-        <div className="absolute bottom-2 left-0 w-full flex justify-between px-2 opacity-0 group-hover/photo:opacity-100 transition-opacity z-10">
-          <button className="bg-black/40 hover:bg-black/60 text-white rounded-full p-1 transition-colors backdrop-blur-sm">
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <span className="text-white text-xs bg-black/40 px-2 py-0.5 rounded-full backdrop-blur-sm">1 of 4</span>
-          <button className="bg-black/40 hover:bg-black/60 text-white rounded-full p-1 transition-colors backdrop-blur-sm">
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
+export default function ProfileCard({ profile, isShortlisted, interestSent, onShortlist, onSendInterest, onMarkViewed }: ProfileCardProps) {
+  const [, navigate] = useLocation();
+  const photo = profilePhotos[profile.photoIdx % 6];
+
+  const handleConnect = () => {
+    onMarkViewed();
+    navigate(`/dashboard/view/${profile.id}`);
+  };
+
+  const handleSendInterest = () => {
+    onMarkViewed();
+    onSendInterest();
+    navigate(`/dashboard/view/${profile.id}?interest=sent`);
+  };
+
+  const handleViewProfile = () => {
+    onMarkViewed();
+    navigate(`/dashboard/view/${profile.id}`);
+  };
+
+  return (
+    <div
+      className="bg-white rounded-xl p-4 flex flex-col sm:flex-row gap-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow group relative overflow-hidden"
+      data-testid={`profile-card-${profile.id}`}
+    >
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#8B1A4A]/5 to-transparent rounded-bl-full pointer-events-none" />
+
+      <div className="relative w-full sm:w-[170px] h-[200px] rounded-xl overflow-hidden flex-shrink-0 cursor-pointer" onClick={handleViewProfile}>
+        <img src={photo} alt={profile.name} className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+
+        {profile.isMutualMatch && (
+          <div className="absolute top-2 left-2 bg-purple-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">💜 Mutual</div>
+        )}
+        {!profile.isMutualMatch && profile.id % 3 === 0 && (
+          <div className="absolute top-2 left-2 bg-[#D4AF37] text-white text-[10px] font-bold px-1.5 py-0.5 rounded">⭐ Plus</div>
+        )}
+        {profile.isNewToday && (
+          <div className="absolute top-2 left-2 bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">🆕 New</div>
+        )}
+        {profile.isNRI && (
+          <div className="absolute bottom-2 left-2 bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">🌍 NRI</div>
+        )}
+        <div className={`absolute top-2 right-2 w-2.5 h-2.5 rounded-full border border-white ${profile.lastActive === "Online Now" ? "bg-green-500" : "bg-gray-400"}`} />
       </div>
-      
-      {/* Center: Details */}
-      <div className="flex-1 min-w-0 flex flex-col justify-between py-1 relative z-10">
+
+      <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5 relative z-10">
         <div>
-          <div className="flex items-center gap-1.5 mb-2">
-            <h3 className="text-xl font-serif font-bold text-gray-900 truncate">{profile.name}</h3>
-            <CheckCircle2 className="w-5 h-5 text-blue-500 fill-blue-50" />
-            <div className="ml-auto flex items-center text-gray-400 hover:text-gray-600 cursor-pointer">
-              <MoreVertical className="w-5 h-5" />
+          <div className="flex items-center gap-1.5 mb-1">
+            <h3 className="text-lg font-serif font-bold text-gray-900 truncate cursor-pointer hover:text-[#8B1A4A]" onClick={handleViewProfile}>{profile.name}</h3>
+            {profile.verified.profile && <CheckCircle2 className="w-4 h-4 text-blue-500 fill-blue-50 shrink-0" />}
+            <div className="ml-auto text-gray-400 hover:text-gray-600 cursor-pointer p-1">
+              <MoreVertical className="w-4 h-4" />
             </div>
           </div>
-          
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 border border-green-100 text-[10px] font-bold text-green-700">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span> Online Now
-            </span>
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-50 border border-purple-100 text-[10px] font-bold text-purple-700">
-              Highly Compatible
-            </span>
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 border border-amber-100 text-[10px] font-bold text-amber-700">
-              Premium
-            </span>
+
+          <VerificationBadges verified={profile.verified} />
+
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {profile.lastActive === "Online Now" && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 border border-green-100 text-[10px] font-bold text-green-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> Online Now
+              </span>
+            )}
+            {profile.isMutualMatch && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-50 border border-purple-100 text-[10px] font-bold text-purple-700">💜 Mutual Match</span>
+            )}
+            {profile.isNRI && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-blue-50 border border-blue-100 text-[10px] font-bold text-blue-700">🌍 NRI</span>
+            )}
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-600 mb-4">
-            <div className="flex gap-2"><span className="text-gray-400 w-5 text-center">👤</span><span className="truncate">{profile.age} yrs, {profile.height}</span></div>
-            <div className="flex gap-2"><span className="text-gray-400 w-5 text-center">💍</span><span className="truncate">{profile.marital}</span></div>
-            <div className="flex gap-2"><span className="text-gray-400 w-5 text-center">🕉️</span><span className="truncate">{profile.religion}</span></div>
-            <div className="flex gap-2"><span className="text-gray-400 w-5 text-center">📍</span><span className="truncate">{profile.location}</span></div>
-            <div className="flex gap-2"><span className="text-gray-400 w-5 text-center">🗣️</span><span className="truncate">{profile.language}</span></div>
-            <div className="flex gap-2"><span className="text-gray-400 w-5 text-center">🎓</span><span className="truncate">{profile.education}</span></div>
-            <div className="flex gap-2"><span className="text-gray-400 w-5 text-center">💼</span><span className="truncate">{profile.profession}</span></div>
-            <div className="flex gap-2"><span className="text-gray-400 w-5 text-center">💰</span><span className="truncate">{profile.income}</span></div>
+
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-gray-600 mb-3">
+            <div className="flex gap-1.5"><span className="shrink-0">👤</span><span className="truncate">{profile.age} yrs, {profile.height}</span></div>
+            <div className="flex gap-1.5"><span className="shrink-0">💍</span><span className="truncate">{profile.maritalStatus}</span></div>
+            <div className="flex gap-1.5"><span className="shrink-0">🕉️</span><span className="truncate">{profile.religion} · {profile.caste}</span></div>
+            <div className="flex gap-1.5"><span className="shrink-0">📍</span><span className="truncate">{profile.city}, {profile.isNRI ? profile.country : profile.state}</span></div>
+            <div className="flex gap-1.5"><span className="shrink-0">🗣️</span><span className="truncate">{profile.motherTongue}</span></div>
+            <div className="flex gap-1.5"><span className="shrink-0">🎓</span><span className="truncate">{profile.education}</span></div>
+            <div className="flex gap-1.5"><span className="shrink-0">💼</span><span className="truncate">{profile.profession}</span></div>
+            <div className="flex gap-1.5"><span className="shrink-0">💰</span><span className="truncate">{profile.income}</span></div>
           </div>
-          
-          <div className="flex justify-between items-center text-xs text-gray-500">
-            <span>Profile created by {profile.profileBy}</span>
-            <span>Last Active: <span className="font-medium text-gray-700">Today</span></span>
-          </div>
+
+          <p className="text-xs text-gray-500 italic line-clamp-2 mb-1">"{profile.bio}"</p>
+          <button onClick={handleViewProfile} className="text-xs text-[#8B1A4A] font-semibold hover:underline">Read More →</button>
         </div>
 
-        <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-3">
-          <button className="flex-1 bg-[#8B1A4A]/5 hover:bg-[#8B1A4A]/10 text-[#8B1A4A] font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm">
-            <Check className="w-4 h-4" /> Send Interest
+        <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2">
+          <button
+            onClick={handleSendInterest}
+            disabled={interestSent}
+            className={`flex-1 font-semibold py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 text-sm ${
+              interestSent
+                ? "bg-green-50 text-green-600 border border-green-200"
+                : "bg-[#8B1A4A]/8 hover:bg-[#8B1A4A]/15 text-[#8B1A4A] border border-[#8B1A4A]/20"
+            }`}
+            data-testid={`btn-send-interest-${profile.id}`}
+          >
+            {interestSent ? <><Check className="w-4 h-4" /> Interest Sent</> : <><Heart className="w-4 h-4" /> Send Interest</>}
           </button>
-          <button className="p-2 border border-gray-200 text-gray-600 hover:text-red-500 hover:border-red-200 hover:bg-red-50 rounded-lg transition-colors" title="Like">
-            <Heart className="w-5 h-5" />
-          </button>
-          <button className="p-2 border border-gray-200 text-gray-600 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50 rounded-lg transition-colors" title="Shortlist">
-            <Star className="w-5 h-5" />
+          <button
+            onClick={() => onShortlist()}
+            className={`p-2 border rounded-lg transition-all ${
+              isShortlisted ? "border-amber-300 bg-amber-50 text-amber-500" : "border-gray-200 text-gray-500 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-500"
+            }`}
+            title="Shortlist"
+            data-testid={`btn-shortlist-${profile.id}`}
+          >
+            <Star className={`w-4 h-4 ${isShortlisted ? "fill-amber-400" : ""}`} />
           </button>
         </div>
       </div>
-      
-      {/* Right: Action */}
-      <div className="sm:w-[130px] flex flex-col items-center justify-center border-t sm:border-t-0 sm:border-l border-gray-100 pt-4 sm:pt-0 pl-0 sm:pl-4 flex-shrink-0 bg-gray-50/50 sm:bg-transparent rounded-b-xl sm:rounded-none -mx-4 -mb-4 sm:mx-0 sm:mb-0 p-4 sm:p-0 z-10">
-        <p className="text-xs text-gray-500 mb-3 text-center font-medium">Like this profile?</p>
-        
-        {profile.action === "connect" ? (
+
+      <div className="sm:w-[120px] flex flex-col items-center justify-center border-t sm:border-t-0 sm:border-l border-gray-100 pt-3 sm:pt-0 pl-0 sm:pl-4 flex-shrink-0 z-10">
+        <p className="text-[11px] text-gray-400 mb-2 text-center font-medium">Like this profile?</p>
+        {profile.canConnect ? (
           <div className="flex flex-col items-center">
-            <button className="w-16 h-16 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 mb-3" data-testid={`btn-connect-${profile.id}`}>
-              <Check className="w-8 h-8" strokeWidth={3} />
+            <button
+              onClick={handleConnect}
+              className="w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 mb-2"
+              data-testid={`btn-connect-${profile.id}`}
+            >
+              <Check className="w-7 h-7" strokeWidth={3} />
             </button>
-            <span className="text-sm font-bold text-emerald-600">Connect Now</span>
-            {profile.id === "1" && <span className="mt-2 text-[10px] bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">Mutual Match!</span>}
+            <span className="text-xs font-bold text-emerald-600">Connect Now</span>
+            {profile.isMutualMatch && (
+              <span className="mt-1 text-[10px] bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">Mutual!</span>
+            )}
           </div>
         ) : (
           <div className="flex flex-col items-center">
-            <button className="w-16 h-16 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B38D1B] hover:from-[#C4A02A] hover:to-[#A37B12] text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 mb-3" data-testid={`btn-upgrade-${profile.id}`}>
-              <span className="text-2xl">👑</span>
+            <button
+              onClick={() => navigate("/dashboard/premium")}
+              className="w-14 h-14 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B38D1B] hover:from-[#C4A02A] hover:to-[#A37B12] text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 mb-2"
+              data-testid={`btn-upgrade-${profile.id}`}
+            >
+              <Crown className="w-7 h-7" />
             </button>
-            <span className="text-sm font-bold text-[#D4AF37] text-center leading-tight">Upgrade to<br/>Connect</span>
+            <span className="text-[11px] font-bold text-[#D4AF37] text-center leading-tight">Upgrade to<br />Connect</span>
           </div>
         )}
+        <p className="text-[10px] text-gray-400 mt-2">{profile.lastActive}</p>
       </div>
     </div>
   );

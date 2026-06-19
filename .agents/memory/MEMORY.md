@@ -1,1 +1,2 @@
 - [Rishtey app routing](rishtey-routing.md) — isLoggedIn state in App.tsx; all /dashboard/* routes protected; useLocation from wouter used inside components for navigation after login/logout.
+- [Rishtey profile data](rishtey-profiles.md) — 20 profiles in src/data/profiles.ts spanning all regions/religions; photoIdx 0-5 maps to profile1-6.png; filters managed in MatchesPage state and passed down as props.
