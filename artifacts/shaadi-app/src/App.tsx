@@ -13,12 +13,28 @@ import ProfilePage from "@/pages/dashboard/ProfilePage";
 import SettingsPage from "@/pages/dashboard/SettingsPage";
 import ProfileDetailPage from "@/pages/dashboard/ProfileDetailPage";
 import InterestsPage from "@/pages/dashboard/InterestsPage";
+import MessagesPage from "@/pages/dashboard/MessagesPage";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [sentInterests, setSentInterests] = useState<number[]>([]);
+  const [acceptedConnections, setAcceptedConnections] = useState<number[]>([1]);
+  const [shortlisted, setShortlisted] = useState<number[]>([]);
+  const [recentlyViewed, setRecentlyViewed] = useState<number[]>([]);
+
+  const sharedProps = {
+    sentInterests,
+    setSentInterests,
+    acceptedConnections,
+    setAcceptedConnections,
+    shortlisted,
+    setShortlisted,
+    recentlyViewed,
+    setRecentlyViewed,
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -29,7 +45,7 @@ function App() {
               {isLoggedIn ? <Redirect to="/dashboard" /> : <LandingPage setIsLoggedIn={setIsLoggedIn} />}
             </Route>
             <Route path="/dashboard">
-              {isLoggedIn ? <MatchesPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
+              {isLoggedIn ? <MatchesPage setIsLoggedIn={setIsLoggedIn} {...sharedProps} /> : <Redirect to="/" />}
             </Route>
             <Route path="/dashboard/my-rishtey">
               {isLoggedIn ? <MyRishteyPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
@@ -38,7 +54,7 @@ function App() {
               {isLoggedIn ? <SearchPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
             </Route>
             <Route path="/dashboard/inbox">
-              {isLoggedIn ? <InboxPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
+              {isLoggedIn ? <InboxPage setIsLoggedIn={setIsLoggedIn} sentInterests={sentInterests} acceptedConnections={acceptedConnections} setAcceptedConnections={setAcceptedConnections} /> : <Redirect to="/" />}
             </Route>
             <Route path="/dashboard/premium">
               {isLoggedIn ? <PremiumPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
@@ -50,10 +66,13 @@ function App() {
               {isLoggedIn ? <SettingsPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
             </Route>
             <Route path="/dashboard/view/:id">
-              {isLoggedIn ? <ProfileDetailPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
+              {isLoggedIn ? <ProfileDetailPage setIsLoggedIn={setIsLoggedIn} sentInterests={sentInterests} setSentInterests={setSentInterests} /> : <Redirect to="/" />}
             </Route>
             <Route path="/dashboard/interests">
               {isLoggedIn ? <InterestsPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
+            </Route>
+            <Route path="/dashboard/messages/:id">
+              {isLoggedIn ? <MessagesPage setIsLoggedIn={setIsLoggedIn} /> : <Redirect to="/" />}
             </Route>
             <Route component={NotFound} />
           </Switch>

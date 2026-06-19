@@ -10,6 +10,14 @@ import { allProfiles } from "@/data/profiles";
 
 interface MatchesPageProps {
   setIsLoggedIn: (value: boolean) => void;
+  sentInterests: number[];
+  setSentInterests: (ids: number[]) => void;
+  acceptedConnections: number[];
+  setAcceptedConnections: (ids: number[]) => void;
+  shortlisted: number[];
+  setShortlisted: (ids: number[]) => void;
+  recentlyViewed: number[];
+  setRecentlyViewed: (ids: number[]) => void;
 }
 
 export interface Filters {
@@ -25,84 +33,65 @@ export interface Filters {
 }
 
 const defaultFilters: Filters = {
-  verification: [],
-  religions: [],
-  maritalStatus: [],
-  education: [],
-  motherTongue: [],
-  states: [],
-  incomeMin: 0,
-  ageMin: 18,
-  ageMax: 50,
+  verification: [], religions: [], maritalStatus: [], education: [],
+  motherTongue: [], states: [], incomeMin: 0, ageMin: 18, ageMax: 50,
 };
 
-export default function MatchesPage({ setIsLoggedIn }: MatchesPageProps) {
+export default function MatchesPage({
+  setIsLoggedIn,
+  sentInterests, setSentInterests,
+  acceptedConnections, setAcceptedConnections,
+  shortlisted, setShortlisted,
+  recentlyViewed, setRecentlyViewed,
+}: MatchesPageProps) {
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [activeTab, setActiveTab] = useState("New Matches");
-  const [shortlisted, setShortlisted] = useState<number[]>([]);
-  const [recentlyViewed, setRecentlyViewed] = useState<number[]>([]);
-  const [sentInterests, setSentInterests] = useState<number[]>([]);
 
   const handleMarkViewed = (id: number) => {
-    setRecentlyViewed((prev) => prev.includes(id) ? prev : [id, ...prev].slice(0, 20));
+    setRecentlyViewed(prev => prev.includes(id) ? prev : [id, ...prev].slice(0, 20));
   };
 
   const handleShortlist = (id: number) => {
-    setShortlisted((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+    setShortlisted(shortlisted.includes(id) ? shortlisted.filter(x => x !== id) : [...shortlisted, id]);
   };
 
   const handleSendInterest = (id: number) => {
-    setSentInterests((prev) => prev.includes(id) ? prev : [...prev, id]);
+    if (!sentInterests.includes(id)) setSentInterests([...sentInterests, id]);
   };
 
   const filteredProfiles = useMemo(() => {
     let list = [...allProfiles];
 
     if (activeTab === "Today's") {
-      list = list.filter((p) => p.isNewToday);
+      list = list.filter(p => p.isNewToday);
     } else if (activeTab === "My Matches") {
-      list = list.filter((p) => p.isMutualMatch || sentInterests.includes(p.id));
+      list = list.filter(p => p.isMutualMatch || sentInterests.includes(p.id) || acceptedConnections.includes(p.id));
     } else if (activeTab === "Near Me") {
-      list = list.filter((p) => p.city === "Mumbai" || p.state === "Maharashtra");
+      list = list.filter(p => p.city === "Mumbai" || p.state === "Maharashtra");
     } else if (activeTab === "Recently Viewed") {
-      const ids = recentlyViewed;
-      list = list.filter((p) => ids.includes(p.id));
+      list = list.filter(p => recentlyViewed.includes(p.id));
     } else if (activeTab === "Shortlisted") {
-      list = list.filter((p) => shortlisted.includes(p.id));
+      list = list.filter(p => shortlisted.includes(p.id));
     }
 
     if (filters.verification.length > 0) {
-      list = list.filter((p) => {
-        return filters.verification.some((v) => {
-          if (v === "profile") return p.verified.profile;
-          if (v === "photo") return p.verified.photo;
-          if (v === "id") return p.verified.id;
-          if (v === "mobile") return p.verified.mobile;
-          return false;
-        });
-      });
+      list = list.filter(p => filters.verification.some(v => {
+        if (v === "profile") return p.verified.profile;
+        if (v === "photo") return p.verified.photo;
+        if (v === "id") return p.verified.id;
+        if (v === "mobile") return p.verified.mobile;
+        return false;
+      }));
     }
 
-    if (filters.religions.length > 0) {
-      list = list.filter((p) => filters.religions.includes(p.religion));
-    }
-
-    if (filters.maritalStatus.length > 0) {
-      list = list.filter((p) => filters.maritalStatus.includes(p.maritalStatus));
-    }
-
-    if (filters.states.length > 0) {
-      list = list.filter((p) => filters.states.includes(p.state) || (p.isNRI && filters.states.includes("NRI")));
-    }
-
-    list = list.filter((p) => p.age >= filters.ageMin && p.age <= filters.ageMax);
-
-    if (filters.incomeMin > 0) {
-      list = list.filter((p) => p.incomeNum >= filters.incomeMin);
-    }
+    if (filters.religions.length > 0) list = list.filter(p => filters.religions.includes(p.religion));
+    if (filters.maritalStatus.length > 0) list = list.filter(p => filters.maritalStatus.includes(p.maritalStatus));
+    if (filters.states.length > 0) list = list.filter(p => filters.states.includes(p.state) || (p.isNRI && filters.states.includes("NRI")));
+    list = list.filter(p => p.age >= filters.ageMin && p.age <= filters.ageMax);
+    if (filters.incomeMin > 0) list = list.filter(p => p.incomeNum >= filters.incomeMin);
 
     return list;
-  }, [filters, activeTab, shortlisted, recentlyViewed, sentInterests]);
+  }, [filters, activeTab, shortlisted, recentlyViewed, sentInterests, acceptedConnections]);
 
   return (
     <div className="min-h-screen bg-[#FFF8F5] font-sans flex flex-col pb-16 md:pb-0" data-testid="matches-page">
@@ -124,6 +113,7 @@ export default function MatchesPage({ setIsLoggedIn }: MatchesPageProps) {
             profiles={filteredProfiles}
             shortlisted={shortlisted}
             sentInterests={sentInterests}
+            acceptedConnections={acceptedConnections}
             onShortlist={handleShortlist}
             onSendInterest={handleSendInterest}
             onMarkViewed={handleMarkViewed}
@@ -133,7 +123,12 @@ export default function MatchesPage({ setIsLoggedIn }: MatchesPageProps) {
         </div>
       </main>
 
-      <Dashboard />
+      <Dashboard
+        sentInterestsCount={sentInterests.length}
+        acceptedCount={acceptedConnections.length}
+        shortlistedCount={shortlisted.length}
+        recentlyViewedCount={recentlyViewed.length}
+      />
       <BottomNav setIsLoggedIn={setIsLoggedIn} />
     </div>
   );

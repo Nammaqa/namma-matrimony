@@ -5,13 +5,14 @@ interface MatchesFeedProps {
   profiles: Profile[];
   shortlisted: number[];
   sentInterests: number[];
+  acceptedConnections: number[];
   onShortlist: (id: number) => void;
   onSendInterest: (id: number) => void;
   onMarkViewed: (id: number) => void;
   activeTab: string;
 }
 
-export default function MatchesFeed({ profiles, shortlisted, sentInterests, onShortlist, onSendInterest, onMarkViewed, activeTab }: MatchesFeedProps) {
+export default function MatchesFeed({ profiles, shortlisted, sentInterests, acceptedConnections, onShortlist, onSendInterest, onMarkViewed, activeTab }: MatchesFeedProps) {
   const tabLabels: Record<string, string> = {
     "New Matches": "New Members Matching Your Preferences",
     "Today's": "Profiles Joined Today",
@@ -49,12 +50,13 @@ export default function MatchesFeed({ profiles, shortlisted, sentInterests, onSh
         </div>
       ) : (
         <div className="space-y-4">
-          {profiles.map((profile) => (
+          {profiles.map(profile => (
             <ProfileCard
               key={profile.id}
               profile={profile}
               isShortlisted={shortlisted.includes(profile.id)}
               interestSent={sentInterests.includes(profile.id)}
+              isAccepted={acceptedConnections.includes(profile.id)}
               onShortlist={() => onShortlist(profile.id)}
               onSendInterest={() => onSendInterest(profile.id)}
               onMarkViewed={() => onMarkViewed(profile.id)}
@@ -65,7 +67,7 @@ export default function MatchesFeed({ profiles, shortlisted, sentInterests, onSh
 
       {profiles.length > 0 && (
         <div className="mt-8 flex justify-center">
-          <button className="bg-white border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white px-8 py-3 rounded-full font-bold shadow-sm transition-colors" data-testid="btn-load-more">
+          <button className="bg-white border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white px-8 py-3 rounded-full font-bold shadow-sm transition-colors">
             Load More Matches
           </button>
         </div>

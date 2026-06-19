@@ -1,23 +1,26 @@
 import { useLocation } from "wouter";
-import { Lock } from "lucide-react";
-import f1 from "@/assets/images/featured1.png";
-import f2 from "@/assets/images/featured2.png";
-import f3 from "@/assets/images/featured3.png";
-import f4 from "@/assets/images/featured4.png";
-import f5 from "@/assets/images/featured5.png";
-import f6 from "@/assets/images/featured6.png";
+import { Shield, Heart, Users, Star, Lock, Globe } from "lucide-react";
 
 interface FeaturedProfilesProps {
   setIsLoggedIn: (v: boolean) => void;
 }
 
-const profiles = [
-  { id: 1, name: "Priya", age: 26, city: "Mumbai", job: "Doctor", img: f1 },
-  { id: 2, name: "Rahul", age: 28, city: "Delhi", job: "Engineer", img: f4 },
-  { id: 3, name: "Anjali", age: 24, city: "Bangalore", job: "MBA", img: f2 },
-  { id: 4, name: "Arjun", age: 30, city: "Chennai", job: "Lawyer", img: f5 },
-  { id: 5, name: "Meera", age: 25, city: "Hyderabad", job: "Pharmacist", img: f3 },
-  { id: 6, name: "Vikram", age: 29, city: "Pune", job: "CA", img: f6 },
+const communities = [
+  { emoji: "🕉️", label: "Hindu Matrimony", desc: "Brahmin, Kshatriya, Vaishya & more", gradient: "from-orange-50 to-amber-50", border: "border-orange-100", icon: "text-orange-500" },
+  { emoji: "☪️", label: "Muslim Matrimony", desc: "Sunni, Shia, Hanafi & more", gradient: "from-green-50 to-emerald-50", border: "border-green-100", icon: "text-green-600" },
+  { emoji: "🙏", label: "Sikh Matrimony", desc: "Jat, Khatri, Arora & more", gradient: "from-blue-50 to-indigo-50", border: "border-blue-100", icon: "text-blue-600" },
+  { emoji: "✝️", label: "Christian Matrimony", desc: "Catholic, Protestant, Orthodox", gradient: "from-purple-50 to-violet-50", border: "border-purple-100", icon: "text-purple-600" },
+  { emoji: "🌍", label: "NRI Matches", desc: "USA, UK, Canada, UAE & more", gradient: "from-sky-50 to-cyan-50", border: "border-sky-100", icon: "text-sky-600" },
+  { emoji: "💎", label: "Jain & Other", desc: "Shwetambar, Digambar & more", gradient: "from-pink-50 to-rose-50", border: "border-pink-100", icon: "text-pink-600" },
+];
+
+const trustFeatures = [
+  { icon: Shield, label: "Every Profile Verified", desc: "Our team reviews each profile before it goes live", color: "text-blue-500 bg-blue-50" },
+  { icon: Lock, label: "100% Privacy", desc: "You control who can see your contact details", color: "text-purple-500 bg-purple-50" },
+  { icon: Heart, label: "Smart Compatibility", desc: "Our algorithm matches based on 40+ preferences", color: "text-rose-500 bg-rose-50" },
+  { icon: Users, label: "Dedicated Support", desc: "Personal relationship managers available 24/7", color: "text-emerald-500 bg-emerald-50" },
+  { icon: Star, label: "Kundali Matching", desc: "Traditional horoscope with modern insights", color: "text-amber-500 bg-amber-50" },
+  { icon: Globe, label: "Global Reach", desc: "Connect with profiles from across the world", color: "text-indigo-500 bg-indigo-50" },
 ];
 
 export default function FeaturedProfiles({ setIsLoggedIn }: FeaturedProfilesProps) {
@@ -29,51 +32,64 @@ export default function FeaturedProfiles({ setIsLoggedIn }: FeaturedProfilesProp
   };
 
   return (
-    <section className="bg-[#FFF8F5] py-20 px-4" data-testid="section-featured">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h3 className="text-[#D4AF37] font-bold uppercase tracking-widest text-sm mb-2" data-testid="featured-eyebrow">Explore Matches</h3>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900" data-testid="featured-title">Profiles Waiting for You</h2>
-        </div>
+    <>
+      <section className="bg-[#FFF8F5] py-20 px-4" data-testid="section-communities">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h3 className="text-[#D4AF37] font-bold uppercase tracking-widest text-sm mb-2">Find Your Community</h3>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">Browse by Religion & Community</h2>
+            <p className="text-gray-500 max-w-xl mx-auto">We have verified profiles from every community across India and worldwide. Find someone who shares your values and traditions.</p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {profiles.map((p) => (
-            <div key={p.id} className="glass-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group" data-testid={`featured-card-${p.id}`}>
-              <div className="relative h-64 overflow-hidden">
-                <img src={p.img} alt={p.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-white">
-                    <Lock className="w-5 h-5" />
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-12">
+            {communities.map((c) => (
+              <button
+                key={c.label}
+                onClick={handleLogin}
+                className={`bg-gradient-to-br ${c.gradient} border ${c.border} rounded-2xl p-6 text-left hover:shadow-lg hover:-translate-y-1 transition-all group`}
+                data-testid={`community-card-${c.label.toLowerCase().replace(/\s+/g, "-")}`}
+              >
+                <div className="text-3xl mb-3">{c.emoji}</div>
+                <h4 className="font-serif font-bold text-gray-900 mb-1 group-hover:text-[#8B1A4A] transition-colors">{c.label}</h4>
+                <p className="text-xs text-gray-500">{c.desc}</p>
+                <div className="mt-3 text-xs font-bold text-[#8B1A4A] group-hover:underline">Browse Profiles →</div>
+              </button>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <button onClick={handleLogin} className="bg-gradient-to-r from-[#D4AF37] to-[#B38D1B] hover:from-[#C4A02A] hover:to-[#A37B12] text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg transform transition hover:-translate-y-1" data-testid="btn-browse-all">
+              Login to Browse All Communities
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-20 px-4" data-testid="section-trust">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h3 className="text-[#8B1A4A] font-bold uppercase tracking-widest text-sm mb-2">Why Rishtey</h3>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900">Built on Trust, Powered by Care</h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {trustFeatures.map((f) => {
+              const Icon = f.icon;
+              return (
+                <div key={f.label} className="flex items-start gap-4 p-5 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow bg-white">
+                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${f.color}`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-1">{f.label}</h4>
+                    <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
                   </div>
                 </div>
-                <div className="absolute top-4 left-4 bg-[#D4AF37] text-white text-xs font-bold px-2 py-1 rounded shadow">Premium</div>
-              </div>
-
-              <div className="p-6 text-center">
-                <h4 className="text-xl font-bold text-gray-900 mb-1">{p.name}, {p.age} <span className="text-gray-400">***</span></h4>
-                <p className="text-gray-600 mb-6">{p.city} | {p.job}</p>
-                <button
-                  onClick={handleLogin}
-                  className="w-full py-2.5 border-2 border-[#8B1A4A] text-[#8B1A4A] font-semibold rounded-lg hover:bg-[#8B1A4A] hover:text-white transition-colors"
-                  data-testid={`btn-login-view-${p.id}`}
-                >
-                  Login to View
-                </button>
-              </div>
-            </div>
-          ))}
+              );
+            })}
+          </div>
         </div>
-
-        <div className="text-center">
-          <button
-            onClick={handleLogin}
-            className="bg-gradient-to-r from-[#D4AF37] to-[#B38D1B] hover:from-[#C4A02A] hover:to-[#A37B12] text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg transform transition hover:-translate-y-1"
-            data-testid="btn-view-all-matches"
-          >
-            Login to See 50 Lakh+ Profiles
-          </button>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
