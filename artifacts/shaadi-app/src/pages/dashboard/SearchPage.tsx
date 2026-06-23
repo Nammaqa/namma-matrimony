@@ -14,12 +14,12 @@ interface SearchPageProps {
 }
 
 const results = [
-  { img: profile1, name: "Priya Sharma", age: 26, height: "5'4\"", city: "Mumbai", edu: "B.Tech", job: "Software Engineer", religion: "Hindu Brahmin", income: "12 LPA", score: 95 },
-  { img: profile2, name: "Ananya Patel", age: 24, height: "5'3\"", city: "Ahmedabad", edu: "MBBS", job: "Doctor", religion: "Hindu Patel", income: "8 LPA", score: 88 },
-  { img: profile3, name: "Deepa Nair", age: 28, height: "5'5\"", city: "Kochi", edu: "MBA", job: "Finance Manager", religion: "Hindu Nair", income: "15 LPA", score: 91 },
-  { img: profile4, name: "Fatima Khan", age: 25, height: "5'4\"", city: "Hyderabad", edu: "MCA", job: "Software Dev", religion: "Muslim Sunni", income: "7 LPA", score: 82 },
-  { img: profile5, name: "Neha Verma", age: 27, height: "5'3\"", city: "Delhi", edu: "MBA", job: "HR Manager", religion: "Hindu", income: "10 LPA", score: 87 },
-  { img: profile6, name: "Sunita Reddy", age: 29, height: "5'2\"", city: "Bangalore", edu: "B.Sc", job: "Pharmacist", religion: "Hindu", income: "6 LPA", score: 79 },
+  { img: profile1, name: "Priya Sharma", age: 26, height: "5'4\"", city: "Mumbai", edu: "B.Tech", job: "Software Engineer", religion: "Hindu Brahmin", income: "12 LPA", score: 0 },
+  { img: profile2, name: "Ananya Patel", age: 24, height: "5'3\"", city: "Ahmedabad", edu: "MBBS", job: "Doctor", religion: "Hindu Patel", income: "8 LPA", score: 0 },
+  { img: profile3, name: "Deepa Nair", age: 28, height: "5'5\"", city: "Kochi", edu: "MBA", job: "Finance Manager", religion: "Hindu Nair", income: "15 LPA", score: 0 },
+  { img: profile4, name: "Fatima Khan", age: 25, height: "5'4\"", city: "Hyderabad", edu: "MCA", job: "Software Dev", religion: "Muslim Sunni", income: "7 LPA", score: 0 },
+  { img: profile5, name: "Neha Verma", age: 27, height: "5'3\"", city: "Delhi", edu: "MBA", job: "HR Manager", religion: "Hindu", income: "10 LPA", score: 0 },
+  { img: profile6, name: "Sunita Reddy", age: 29, height: "5'2\"", city: "Bangalore", edu: "B.Sc", job: "Pharmacist", religion: "Hindu", income: "6 LPA", score: 0 },
 ];
 
 const inputCls = "w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B1A4A]/30 focus:border-[#8B1A4A]";
@@ -130,7 +130,7 @@ export default function SearchPage({ setIsLoggedIn }: SearchPageProps) {
                     <img src={r.img} alt={r.name} className="w-full h-48 object-cover object-top" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <div className="absolute top-3 left-3">
-                      <span className="bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold">{r.score}% Match</span>
+                      <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold">0% Match</span>
                     </div>
                     <div className="absolute top-3 right-3 flex gap-2">
                       <button
@@ -145,7 +145,7 @@ export default function SearchPage({ setIsLoggedIn }: SearchPageProps) {
                         className={`h-8 w-8 rounded-full flex items-center justify-center shadow transition-all ${shortlisted.includes(i) ? "bg-amber-400 text-white" : "bg-white/90 text-gray-600 hover:bg-amber-50"}`}
                         data-testid={`btn-shortlist-${i}`}
                       >
-                        <Star className={`h-4 w-4 ${shortlisted.includes(i) ? "fill-white" : ""}`} />
+                        <Heart className={`h-4 w-4 ${shortlisted.includes(i) ? "fill-white" : ""}`} />
                       </button>
                     </div>
                     <div className="absolute bottom-3 left-3">

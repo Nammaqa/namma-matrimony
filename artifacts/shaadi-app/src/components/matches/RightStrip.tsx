@@ -14,7 +14,12 @@ export default function RightStrip() {
           return (
             <button
               key={profile.id}
-              onClick={() => navigate(`/dashboard/view/${profile.id}`)}
+              onClick={() => {
+                const nextId = allProfiles.length > 1 
+                  ? allProfiles.find(p => p.id !== profile.id)?.id || profile.id 
+                  : profile.id;
+                navigate(`/dashboard/view/${nextId}`);
+              }}
               className="group relative"
               data-testid={`thumb-${profile.id}`}
               title={`${profile.name}, ${profile.age} · ${profile.city}`}

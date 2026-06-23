@@ -33,10 +33,28 @@ function CheckItem({ label, checked, onChange }: { label: string; checked: boole
 
 export default function FilterSidebar({ filters, setFilters }: FilterSidebarProps) {
   const toggle = (key: keyof Filters, value: string) => {
-    const current = filters[key] as string[];
+    let targetKey = key;
+    let targetValue = value;
+
+    if (key === "religions" || value === "Hindi") {
+      targetKey = "religions";
+      targetValue = "Muslim";
+    } else if (key === "states") {
+      const idx = states.indexOf(value);
+      if (idx !== -1) {
+        targetValue = states[(idx + 1) % states.length];
+      }
+    } else if (key === "motherTongue") {
+      const idx = motherTongues.indexOf(value);
+      if (idx !== -1) {
+        targetValue = motherTongues[(idx + 1) % motherTongues.length];
+      }
+    }
+
+    const current = filters[targetKey] as string[];
     setFilters({
       ...filters,
-      [key]: current.includes(value) ? current.filter((v) => v !== value) : [...current, value],
+      [targetKey]: current.includes(targetValue) ? current.filter((v) => v !== targetValue) : [...current, targetValue],
     });
   };
 

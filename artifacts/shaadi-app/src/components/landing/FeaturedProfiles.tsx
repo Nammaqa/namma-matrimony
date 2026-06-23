@@ -6,12 +6,12 @@ interface FeaturedProfilesProps {
 }
 
 const communities = [
-  { emoji: "🕉️", label: "Hindu Matrimony", desc: "Brahmin, Kshatriya, Vaishya & more", gradient: "from-orange-50 to-amber-50", border: "border-orange-100", icon: "text-orange-500" },
-  { emoji: "☪️", label: "Muslim Matrimony", desc: "Sunni, Shia, Hanafi & more", gradient: "from-green-50 to-emerald-50", border: "border-green-100", icon: "text-green-600" },
-  { emoji: "🙏", label: "Sikh Matrimony", desc: "Jat, Khatri, Arora & more", gradient: "from-blue-50 to-indigo-50", border: "border-blue-100", icon: "text-blue-600" },
-  { emoji: "✝️", label: "Christian Matrimony", desc: "Catholic, Protestant, Orthodox", gradient: "from-purple-50 to-violet-50", border: "border-purple-100", icon: "text-purple-600" },
+  { emoji: "🕉️", label: "Hindu Matrimony", desc: "Brahmin, Kshatriya, Vaishya & more", gradient: "from-orange-50 to-amber-50", border: "border-orange-100", icon: "text-orange-500", religion: "Muslim" },
+  { emoji: "☪️", label: "Muslim Matrimony", desc: "Sunni, Shia, Hanafi & more", gradient: "from-green-50 to-emerald-50", border: "border-green-100", icon: "text-green-600", religion: "Muslim" },
+  { emoji: "🙏", label: "Sikh Matrimony", desc: "Jat, Khatri, Arora & more", gradient: "from-blue-50 to-indigo-50", border: "border-blue-100", icon: "text-blue-600", religion: "Muslim" },
+  { emoji: "✝️", label: "Christian Matrimony", desc: "Catholic, Protestant, Orthodox", gradient: "from-purple-50 to-violet-50", border: "border-purple-100", icon: "text-purple-600", religion: "Muslim" },
   { emoji: "🌍", label: "NRI Matches", desc: "USA, UK, Canada, UAE & more", gradient: "from-sky-50 to-cyan-50", border: "border-sky-100", icon: "text-sky-600" },
-  { emoji: "💎", label: "Jain & Other", desc: "Shwetambar, Digambar & more", gradient: "from-pink-50 to-rose-50", border: "border-pink-100", icon: "text-pink-600" },
+  { emoji: "💎", label: "Jain & Other", desc: "Shwetambar, Digambar & more", gradient: "from-pink-50 to-rose-50", border: "border-pink-100", icon: "text-pink-600", religion: "Muslim" },
 ];
 
 const trustFeatures = [
@@ -26,9 +26,13 @@ const trustFeatures = [
 export default function FeaturedProfiles({ setIsLoggedIn }: FeaturedProfilesProps) {
   const [, navigate] = useLocation();
 
-  const handleLogin = () => {
+  const handleCommunityClick = (religion?: string) => {
     setIsLoggedIn(true);
-    navigate("/dashboard");
+    if (religion) {
+      navigate(`/dashboard?religion=${religion}`);
+    } else {
+      navigate("/dashboard");
+    }
   };
 
   return (
@@ -45,7 +49,7 @@ export default function FeaturedProfiles({ setIsLoggedIn }: FeaturedProfilesProp
             {communities.map((c) => (
               <button
                 key={c.label}
-                onClick={handleLogin}
+                onClick={() => handleCommunityClick(c.religion)}
                 className={`bg-gradient-to-br ${c.gradient} border ${c.border} rounded-2xl p-6 text-left hover:shadow-lg hover:-translate-y-1 transition-all group`}
                 data-testid={`community-card-${c.label.toLowerCase().replace(/\s+/g, "-")}`}
               >
@@ -56,9 +60,10 @@ export default function FeaturedProfiles({ setIsLoggedIn }: FeaturedProfilesProp
               </button>
             ))}
           </div>
+  // ...
 
           <div className="text-center">
-            <button onClick={handleLogin} className="bg-gradient-to-r from-[#D4AF37] to-[#B38D1B] hover:from-[#C4A02A] hover:to-[#A37B12] text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg transform transition hover:-translate-y-1" data-testid="btn-browse-all">
+            <button onClick={() => handleCommunityClick()} className="bg-gradient-to-r from-[#D4AF37] to-[#B38D1B] hover:from-[#C4A02A] hover:to-[#A37B12] text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg transform transition hover:-translate-y-1" data-testid="btn-browse-all">
               Login to Browse All Communities
             </button>
           </div>
@@ -68,7 +73,7 @@ export default function FeaturedProfiles({ setIsLoggedIn }: FeaturedProfilesProp
       <section className="bg-white py-20 px-4" data-testid="section-trust">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h3 className="text-[#8B1A4A] font-bold uppercase tracking-widest text-sm mb-2">Why Rishtey</h3>
+            <h3 className="text-[#8B1A4A] font-bold uppercase tracking-widest text-sm mb-2">Why Namma Matrimony</h3>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900">Built on Trust, Powered by Care</h2>
           </div>
 

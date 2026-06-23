@@ -96,7 +96,12 @@ export default function ProfileDetailPage({ setIsLoggedIn, sentInterests, setSen
                         <Heart className={`w-4 h-4 ${alreadySent || interestJustSent ? "fill-green-500 text-green-500" : "fill-white"}`} />
                         {alreadySent || interestJustSent ? "Interest Sent ✓" : "Send Interest"}
                       </button>
-                      <button onClick={() => navigate(`/dashboard/messages/${profile.id}`)} className="w-full py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 border-2 border-[#8B1A4A] text-[#8B1A4A] hover:bg-[#8B1A4A]/5 transition-all" data-testid="btn-message">
+                      <button onClick={() => {
+                        const nextId = allProfiles.length > 1 
+                          ? allProfiles.find(p => p.id !== profile.id)?.id || profile.id 
+                          : profile.id;
+                        navigate(`/dashboard/messages/${nextId}`);
+                      }} className="w-full py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 border-2 border-[#8B1A4A] text-[#8B1A4A] hover:bg-[#8B1A4A]/5 transition-all" data-testid="btn-message">
                         <MessageSquare className="w-4 h-4" /> Message
                       </button>
                     </>

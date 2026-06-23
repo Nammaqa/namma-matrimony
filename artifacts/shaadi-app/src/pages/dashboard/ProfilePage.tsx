@@ -102,7 +102,7 @@ function CareerEducation() {
         <div><label className={labelCls}>Company Name</label><input className={inputCls} defaultValue="TCS, Mumbai" /></div>
         <div><label className={labelCls}>Annual Income</label>
           <select className={inputCls}><option>10–15 LPA</option><option>15–25 LPA</option><option>25–50 LPA</option><option>50L+</option></select></div>
-        <div><label className={labelCls}>Work Location</label><input className={inputCls} defaultValue="Mumbai, Maharashtra" /></div>
+        <div><label className={labelCls}>Work Location</label><input className={inputCls} defaultValue="Delhi" /></div>
       </div>
     </div>
   );
@@ -185,7 +185,7 @@ function Horoscope() {
     <div className="space-y-6">
       <p className={sectionTitle}>Birth Details</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div><label className={labelCls}>Date of Birth</label><input type="date" className={inputCls} defaultValue="1998-03-15" /></div>
+        <div><label className={labelCls}>Date of Birth</label><input type="date" className={inputCls} defaultValue="1995-07-20" /></div>
         <div><label className={labelCls}>Time of Birth</label><input type="time" className={inputCls} defaultValue="10:30" /></div>
         <div><label className={labelCls}>Place of Birth</label><input className={inputCls} defaultValue="Lucknow, Uttar Pradesh" /></div>
         <div><label className={labelCls}>Country</label><input className={inputCls} defaultValue="India" /></div>

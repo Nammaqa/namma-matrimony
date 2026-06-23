@@ -35,7 +35,7 @@ export default function BottomNav({ setIsLoggedIn }: BottomNavProps) {
       {showMenu && (
         <div className="fixed bottom-20 right-4 z-50 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden w-52 md:hidden">
           <button
-            onClick={() => { navigate("/dashboard/profile"); setShowMenu(false); }}
+            onClick={() => { navigate("/dashboard/messages"); setShowMenu(false); }}
             className="flex items-center gap-3 w-full px-4 py-3.5 hover:bg-gray-50 text-sm text-gray-700 font-medium"
           >
             <User className="w-4 h-4 text-[#8B1A4A]" />

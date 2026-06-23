@@ -40,7 +40,7 @@ export default function WhyRishtey() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FFF8E7] to-[#D4AF37] mb-4" data-testid="why-title">
-            Why Millions Choose Rishtey
+            Why Millions Choose Namma Matrimony
           </h2>
           <p className="text-[#D4AF37] text-lg opacity-80" data-testid="why-subtitle">The most trusted name in matrimony</p>
         </div>

@@ -23,7 +23,7 @@ export default function InterestsPage({ setIsLoggedIn }: InterestsPageProps) {
   const [accepted, setAccepted] = useState<number[]>([1]);
 
   const profiles = activeTab === "received"
-    ? receivedProfiles.filter((p) => !dismissed.includes(p.id))
+    ? receivedProfiles
     : activeTab === "sent"
     ? sentProfiles
     : acceptedProfiles;

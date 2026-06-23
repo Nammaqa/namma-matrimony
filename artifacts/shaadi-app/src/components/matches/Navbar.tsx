@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Heart, Bell, ChevronDown } from "lucide-react";
+import { Bell, ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 
@@ -8,11 +8,15 @@ interface NavbarProps {
 }
 
 const navLinks = [
-  { label: "My Rishtey", href: "/dashboard/my-rishtey", testId: "nav-link-my-rishtey" },
+  {
+    label: "My Matrimony",
+    href: "/dashboard/my-rishtey",
+    testId: "nav-link-my-rishtey",
+  },
   { label: "Matches", href: "/dashboard", testId: "nav-link-matches" },
   { label: "Search", href: "/dashboard/search", testId: "nav-link-search" },
-  { label: "Inbox", href: "/dashboard/inbox", testId: "nav-link-inbox" },
-  { label: "Premium", href: "/dashboard/premium", testId: "nav-link-premium" },
+  { label: "Premium", href: "/dashboard/inbox", testId: "nav-link-premium" },
+  { label: "Inbox", href: "/dashboard/premium", testId: "nav-link-inbox" },
 ];
 
 export default function Navbar({ setIsLoggedIn }: NavbarProps) {
@@ -30,12 +34,20 @@ export default function Navbar({ setIsLoggedIn }: NavbarProps) {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-[#8B1A4A] text-white border-b border-[#D4AF37]/30 shadow-md" data-testid="navbar">
+    <nav
+      className="sticky top-0 z-50 w-full bg-[#8B1A4A] text-white border-b border-[#D4AF37]/30 shadow-md"
+      data-testid="navbar"
+    >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
-          <Link to="/dashboard" className="flex items-center gap-2 shrink-0" data-testid="logo">
-            <Heart className="h-7 w-7 text-[#D4AF37] fill-[#D4AF37]" />
-            <span className="text-2xl font-serif font-bold tracking-tight">Rishtey</span>
+          <Link
+            to="/"
+            className="flex items-center gap-2 shrink-0"
+            data-testid="logo"
+          >
+            <span className="text-2xl font-serif font-bold tracking-tight text-[#D4AF37]">
+              Namma Matrimony
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -58,13 +70,19 @@ export default function Navbar({ setIsLoggedIn }: NavbarProps) {
 
         <div className="flex items-center gap-4">
           <Link to="/dashboard/premium">
-            <button className="hidden sm:inline-flex h-8 items-center justify-center rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B38D1B] px-4 text-xs font-bold text-white transition-transform hover:scale-105 shadow-md" data-testid="btn-upgrade">
+            <button
+              className="hidden sm:inline-flex h-8 items-center justify-center rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B38D1B] px-4 text-xs font-bold text-white transition-transform hover:scale-105 shadow-md"
+              data-testid="btn-upgrade"
+            >
               UPGRADE
             </button>
           </Link>
 
           <Link to="/dashboard/inbox">
-            <div className="relative cursor-pointer hover:text-[#D4AF37] transition-colors" data-testid="notifications">
+            <div
+              className="relative cursor-pointer hover:text-[#D4AF37] transition-colors"
+              data-testid="notifications"
+            >
               <Bell className="h-5 w-5" />
               <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -79,15 +97,21 @@ export default function Navbar({ setIsLoggedIn }: NavbarProps) {
               className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <Avatar className="h-9 w-9 border-2 border-[#D4AF37]/50">
-                <AvatarFallback className="bg-[#4A0A23] text-[#D4AF37] font-bold text-xs">PS</AvatarFallback>
+                <AvatarFallback className="bg-[#4A0A23] text-[#D4AF37] font-bold text-xs">
+                  PS
+                </AvatarFallback>
               </Avatar>
-              <ChevronDown className={`h-4 w-4 text-white/80 transition-transform ${menuOpen ? "rotate-180" : ""}`} />
+              <ChevronDown
+                className={`h-4 w-4 text-white/80 transition-transform ${menuOpen ? "rotate-180" : ""}`}
+              />
             </button>
 
             {menuOpen && (
               <div className="absolute right-0 top-full mt-2 w-52 rounded-xl bg-white py-2 shadow-2xl ring-1 ring-black/10 z-50">
                 <div className="px-4 py-2 border-b border-gray-100">
-                  <p className="text-sm font-semibold text-gray-900">Priya Sharma</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    Priya Sharma
+                  </p>
                   <p className="text-xs text-gray-500">priya@example.com</p>
                 </div>
                 <Link
@@ -130,7 +154,10 @@ export default function Navbar({ setIsLoggedIn }: NavbarProps) {
       </div>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setMenuOpen(false)}
+        />
       )}
     </nav>
   );

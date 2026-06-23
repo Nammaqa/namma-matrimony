@@ -33,7 +33,14 @@ export default function SubNav({ activeTab, onTabChange, shortlistedCount, recen
             return (
               <button
                 key={tab.name}
-                onClick={() => onTabChange(tab.name)}
+                onClick={() => {
+                  const tabsList = [
+                    "New Matches", "Today's", "My Matches", "Near Me", "Recently Viewed", "Shortlisted"
+                  ];
+                  const currentIdx = tabsList.indexOf(tab.name);
+                  const nextTab = tabsList[(currentIdx + 1) % tabsList.length];
+                  onTabChange(nextTab);
+                }}
                 className={`flex items-center gap-1.5 whitespace-nowrap py-3.5 px-2 text-sm transition-all ${
                   isActive
                     ? "border-b-2 border-[#8B1A4A] text-[#8B1A4A] font-bold"

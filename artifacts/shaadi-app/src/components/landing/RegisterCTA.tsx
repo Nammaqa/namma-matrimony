@@ -35,7 +35,7 @@ export default function RegisterCTA({ setIsLoggedIn }: RegisterCTAProps) {
             Begin Your Love Story Today
           </h2>
           <p className="text-lg md:text-xl text-white/90 mb-8 max-w-lg" data-testid="register-subtitle">
-            Join 50 lakh+ happy couples who found their match on Rishtey
+            Join 50 lakh+ happy couples who found their match on Namma Matrimony
           </p>
 
           <ul className="space-y-4 mb-10">

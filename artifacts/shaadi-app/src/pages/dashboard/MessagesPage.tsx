@@ -18,7 +18,7 @@ interface Message {
 }
 
 const getInitialMessages = (profileName: string): Message[] => [
-  { id: 1, from: "them", text: `Hi! I came across your profile on Rishtey and found it quite interesting. 😊`, time: "10:02 AM", read: true },
+  { id: 1, from: "them", text: `Hi! I came across your profile on Namma Matrimony and found it quite interesting. 😊`, time: "10:02 AM", read: true },
   { id: 2, from: "me", text: `Hello ${profileName.split(" ")[0]}! Thank you for reaching out. I went through your profile too — very impressive!`, time: "10:15 AM", read: true },
   { id: 3, from: "them", text: "Thank you! I'd love to know more about you and your family background.", time: "10:18 AM", read: true },
   { id: 4, from: "me", text: "Sure! I'm from a close-knit family in Mumbai. My parents are very supportive. How about you?", time: "10:30 AM", read: true },
@@ -159,7 +159,7 @@ export default function MessagesPage({ setIsLoggedIn }: MessagesPageProps) {
                 <Send className="h-4 w-4" />
               </button>
             </div>
-            <p className="text-[10px] text-gray-400 text-center mt-2">Messages are end-to-end secured on Rishtey</p>
+            <p className="text-[10px] text-gray-400 text-center mt-2">Messages are end-to-end secured on Namma Matrimony</p>
           </div>
         </div>
       </div>

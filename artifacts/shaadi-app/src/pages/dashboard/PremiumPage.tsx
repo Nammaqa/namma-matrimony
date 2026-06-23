@@ -91,7 +91,7 @@ export default function PremiumPage({ setIsLoggedIn }: PremiumPageProps) {
             <Crown className="h-4 w-4 text-[#D4AF37]" /> Premium Membership
           </div>
           <h1 className="text-4xl font-serif font-bold text-gray-900 mb-3">Upgrade Your Love Journey</h1>
-          <p className="text-gray-500 text-lg max-w-xl mx-auto">Join lakhs of premium members who found their perfect partner faster with Rishtey Premium</p>
+          <p className="text-gray-500 text-lg max-w-xl mx-auto">Join lakhs of premium members who found their perfect partner faster with Namma Matrimony Premium</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">

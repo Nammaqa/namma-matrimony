@@ -9,13 +9,17 @@ export default function Hero({ setIsLoggedIn }: HeroProps) {
   const [, navigate] = useLocation();
 
   const scrollToRegister = () => {
-    const el = document.getElementById("register");
+    const targets = {
+      "register": "how-it-works",
+    };
+    const targetId = targets["register"] || "hero";
+    const el = document.getElementById(targetId);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleLogin = () => {
     setIsLoggedIn(true);
-    navigate("/dashboard");
+    navigate("/dashboard/settings");
   };
 
   return (
@@ -27,8 +31,12 @@ export default function Hero({ setIsLoggedIn }: HeroProps) {
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
         <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-[#D4AF37] text-[#1A0A14] text-sm font-bold mb-6 shadow-lg" data-testid="hero-badge">
-          Trusted by 50 Lakh+ Families Across India
+          Trusted by 5 Lakh+ Families Across India
         </div>
+
+        <button onClick={() => window.location.href = '/'} className="text-3xl md:text-5xl font-serif font-bold text-[#D4AF37] mb-4 hover:opacity-90 transition-opacity" data-testid="hero-brand">
+          Namma Matrimony
+        </button>
 
         <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4 drop-shadow-md max-w-4xl" data-testid="hero-title">
           Find Your Perfect Life Partner
@@ -50,9 +58,9 @@ export default function Hero({ setIsLoggedIn }: HeroProps) {
             <div className="flex flex-col">
               <label className="text-xs font-semibold text-white/80 uppercase mb-1">Age</label>
               <div className="flex items-center gap-2">
-                <input type="number" defaultValue={21} min={18} max={70} className="w-full bg-white/90 text-gray-900 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                <input type="number" defaultValue={21} className="w-full bg-white/90 text-gray-900 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-[#D4AF37] outline-none" />
                 <span className="text-white/80">to</span>
-                <input type="number" defaultValue={30} min={18} max={70} className="w-full bg-white/90 text-gray-900 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-[#D4AF37] outline-none" />
+                <input type="number" defaultValue={30} className="w-full bg-white/90 text-gray-900 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-[#D4AF37] outline-none" />
               </div>
             </div>
             <div className="flex flex-col">
@@ -67,7 +75,7 @@ export default function Hero({ setIsLoggedIn }: HeroProps) {
               <input type="text" placeholder="Enter city or state" className="bg-white/90 text-gray-900 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-[#D4AF37] outline-none" />
             </div>
             <div className="flex flex-col justify-end">
-              <button onClick={scrollToRegister} className="w-full bg-gradient-to-r from-[#8B1A4A] to-[#C72E6C] hover:from-[#7A1540] hover:to-[#B5255F] text-white font-bold rounded-lg px-4 py-2.5 shadow-lg transition-all active:scale-95">
+              <button className="w-full bg-gradient-to-r from-[#8B1A4A] to-[#C72E6C] hover:from-[#7A1540] hover:to-[#B5255F] text-white font-bold rounded-lg px-4 py-2.5 shadow-lg transition-all active:scale-95">
                 Find My Match
               </button>
             </div>

@@ -1,8 +1,8 @@
 import React from "react";
 import { Star, Heart } from "lucide-react";
-import couple1 from "@/assets/images/couple1.png";
+import couple3 from "@/assets/images/couple1.png";
 import couple2 from "@/assets/images/couple2.png";
-import couple3 from "@/assets/images/couple3.png";
+import couple1 from "@/assets/images/couple3.png";
 
 const stories = [
   {
@@ -10,7 +10,7 @@ const stories = [
     names: "Priya & Arjun",
     city: "Mumbai",
     year: "2023",
-    quote: "Rishtey found us our perfect match in 3 weeks. We share the same values and dreams!",
+    quote: "Namma Matrimony found us our perfect match in 3 weeks. We share the same values and dreams!",
     img: couple1,
   },
   {
@@ -18,7 +18,7 @@ const stories = [
     names: "Meera & Rahul",
     city: "Delhi",
     year: "2022",
-    quote: "I was skeptical about online matrimony, but Rishtey changed my life. Couldn't ask for better.",
+    quote: "I was skeptical about online matrimony, but Namma Matrimony changed my life. Couldn't ask for better.",
     img: couple2,
   },
   {
